@@ -1,0 +1,1 @@
+# C-pierre-feuille-ciseau-objet
