@@ -1,51 +1,77 @@
-﻿using System;
+using System;
 
-namespace Cours2
+namespace Cours3
 {
     class Program
     {
         static void Main(string[] args)
         {
+            Joueur joueur1 = new Joueur("joueur", false);
+
+            //////////////////////////////// Passez le paramètre en true pour être en mode ia et false pour être en mode manuel //////////////////////////////// 
+
+            Joueur joueur2 = new Joueur("IA", true);
+
             var hasard = new Random();
             var score = new int[]{ 0,0 };
-            var options = "Pierre,Feuille,Ciseaux".Split(",");
-            string choix;
-            int intChoix;
-            
             Console.WriteLine("Bonjour et bienvenue dans mon jeu de pierre feuille ciseaux");
 
-            while (score[0] < 3 && score[1] < 3){
+            game(joueur1, joueur2);
 
-                var n = hasard.Next(3);
-                Console.WriteLine("\nVeuillez taper : ");
 
-                Console.WriteLine("1.Pierre    2.Feuille    3.Ciseaux");
+
+
+            static void game (Joueur joueur1, Joueur joueur2) {
+            while (joueur1.Score < 3 && joueur2.Score < 3){
+    
+                Console.WriteLine($"Vous : {joueur1.Score} \nAdversaire : {joueur2.Score}"); 
                 
-                choix = Console.ReadLine();
-                intChoix = int.Parse(choix) - 1;
-                
-                if((n == 0 && intChoix == 1 ) || (n == 1 && intChoix == 2) || (n == 2 && intChoix == 0)) {
-                    Console.WriteLine ($"\nVous : {options[intChoix]} \nAdversaire : {options[n]} \nVous avez gagné\n");
-                    score[0]++;}
-
-                else if ((n == 0 && intChoix == 2) || (n == 1 && intChoix == 0) || (n == 2 && intChoix == 1)) {
-                    Console.WriteLine ($"\nVous : {options[intChoix]} \nAdversaire : {options[n]} \nVous avez perdu\n");
-                    score[1]++;
-
-                } else {
-                    Console.WriteLine ($"\nVous : {options[intChoix]} \nAdversaire : {options[n]} \nÉgalité\n");
+                choix(joueur1);
+                choix(joueur2);
+                duel(joueur1, joueur2);
+          
+            }
+                Console.WriteLine($"Vous : {joueur1.Score} Adversaire : {joueur2.Score}");
+            }
+                static void choix(Joueur joueur) {
+                    string choix;
+                    var hasard = new Random();
+                    if (joueur.IA == true) {
+                        joueur.Choix = hasard.Next(3);
+                        
+                    } else {
+                        Console.WriteLine("1.Pierre 2.Feuille 3.ciseaux");
+                        choix = Console.ReadLine();
+                        joueur.Choix = int.Parse(choix) - 1;
+                    }
                 }
 
-                Console.WriteLine($"Vous : {score[1]} \nAdversaire : {score[0]}");  
 
-          
 
-            }
             
-            
-            Console.WriteLine("Appuyez sur une touche pour quitter...");
-            Console.ReadKey();
+                static void duel(Joueur joueur1, Joueur joueur2) {
+
+                    var options = "Pierre,Feuille,Ciseaux".Split(",");
+                
+                        if((joueur2.Choix == 0 && joueur1.Choix == 1 ) || (joueur2.Choix == 1 && joueur1.Choix == 2) || (joueur2.Choix == 2 && joueur1.Choix == 0)) {
+                            Console.WriteLine ($"\nVous : {options[joueur1.Choix]} \nAdversaire : {options[joueur2.Choix]} \nVous avez gagné\n");
+                            joueur1.Score++;}
+
+                        else if ((joueur2.Choix == 0 && joueur1.Choix == 2) || (joueur2.Choix == 1 && joueur1.Choix == 0) || (joueur2.Choix == 2 && joueur1.Choix == 1)) {
+                            Console.WriteLine ($"\nVous : {options[joueur1.Choix]} \nAdversaire : {options[joueur2.Choix]} \nVous avez perdu\n");
+                            joueur2.Score++;
+
+                        } else {
+                            Console.WriteLine ($"\nVous : {options[joueur1.Choix]} \nAdversaire : {options[joueur2.Choix]} \nÉgalité\n");
+                        }
+
+                }
+
+
+
 
         }
+
     }
+
 }
